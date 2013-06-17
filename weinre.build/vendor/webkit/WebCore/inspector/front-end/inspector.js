@@ -240,6 +240,18 @@ var WebInspector = {
             this.panels.audits = new WebInspector.AuditsPanel();
         if (hiddenPanels.indexOf("console") === -1)
             this.panels.console = new WebInspector.ConsolePanel();
+        if (hiddenPanels.indexOf("aardwolf") === -1) {
+            var webIns = this;
+            $.ajax({
+                async : false,
+                url : document.location.href.replace("/client/","/ws/reload/ip"),
+                success: function (data) {
+                    webIns.panels.aardwolf = new WebInspector.ExtensionPanel("aardwolf", "Debug", "Images/reloadDebugIcon.png", { ip : data});
+                },
+                error: function (xhr, textStatus, error) {
+                }
+            });
+        }
     },
 
     get attached()
